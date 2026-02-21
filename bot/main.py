@@ -23,8 +23,6 @@ app = Flask(__name__)
 
 # Config
 TOKEN = os.environ.get('BOT_TOKEN', '')
-AWIN_API_KEY = os.environ.get('AWIN_API_KEY', '')
-IMPACT_API_KEY = os.environ.get('IMPACT_API_KEY', '')
 BASE_URL = os.environ.get('BASE_URL', os.environ.get('VERCEL_URL', ''))
 if BASE_URL and not BASE_URL.startswith('http'):
     BASE_URL = f'https://{BASE_URL}'
@@ -40,13 +38,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     
-    text = (
-        "🏂 *KEMICAL EXTREME* 🛹
-"
-        "Tu dosis de adrenalina, sin limites.
-"
-        "50+ marcas • Mejor precio garantizado • Envio directo"
-    )
+    text = """🏂 *KEMICAL EXTREME* 🛹
+Tu dosis de adrenalina, sin limites.
+50+ marcas • Mejor precio garantizado • Envio directo"""
     
     if update.message:
         await update.message.reply_text(text, reply_markup=reply_markup, parse_mode='Markdown')
