@@ -1,6 +1,7 @@
 import os
 import logging
 import asyncio
+import urllib.request
 from flask import Flask, request, jsonify
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
@@ -95,6 +96,14 @@ def webhook():
     except Exception as e:
         logger.error(f"Webhook error: {e}")
         return jsonify({'ok': False, 'error': str(e)}), 500
+
+@app.route('/setup_webhook', methods=['GET'])
+def setup_webhook():
+    webhook_url = 'https://kemical-extreme-bot.vercel.app/webhook'
+    api_url = f'https://api.telegram.org/bot{TOKEN}/setWebhook?url={webhook_url}'
+    with urllib.request.urlopen(api_url) as resp:
+        result = resp.read().decode()
+    return jsonify({'webhook_set': True, 'url': webhook_url, 'result': result})
 
 @app.route('/', methods=['GET'])
 def index():
