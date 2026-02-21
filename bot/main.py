@@ -26,7 +26,6 @@ TOKEN = os.environ.get('BOT_TOKEN', '')
 AWIN_API_KEY = os.environ.get('AWIN_API_KEY', '')
 IMPACT_API_KEY = os.environ.get('IMPACT_API_KEY', '')
 BASE_URL = os.environ.get('BASE_URL', os.environ.get('VERCEL_URL', ''))
-
 if BASE_URL and not BASE_URL.startswith('http'):
     BASE_URL = f'https://{BASE_URL}'
 
@@ -43,10 +42,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     text = (
         "🏂 *KEMICAL EXTREME* 🛹
-
 "
         "Tu dosis de adrenalina, sin limites.
-
 "
         "50+ marcas • Mejor precio garantizado • Envio directo"
     )
@@ -77,12 +74,10 @@ async def show_skate(query):
         [InlineKeyboardButton("🔙 Volver", callback_data='main_menu')]
     ]
     await query.edit_message_text("*SKATEBOARDING*
-
 Selecciona subcategoria:", reply_markup=InlineKeyboardMarkup(keyboard), parse_mode='Markdown')
 
 async def show_deals(query):
     text = "*OFERTAS DEL DIA*
-
 1. Blue Tomato: 20% en Snowwear
 2. Tillys: 2x1 en Graphic Tees"
     keyboard = [[InlineKeyboardButton("🔙 Volver", callback_data='main_menu')]]
