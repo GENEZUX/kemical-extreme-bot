@@ -70,28 +70,22 @@ async def show_deals(query):
     keyboard = [[InlineKeyboardButton("Volver", callback_data='main_menu')]]
     await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard), parse_mode='Markdown')
 
-# Bot app global
-bot_app = None
 
-async def get_bot_app():
-    global bot_app
-    if bot_app is None:
-        bot_app = Application.builder().token(TOKEN).build()
-        bot_app.add_handler(CommandHandler('start', start))
-        bot_app.add_handler(CallbackQueryHandler(handle_callback))
-        await bot_app.initialize()
-    return bot_app
+async def process_update(token, data):
+    """Crea una app fresca por cada request para evitar el bug de event loop cerrado en Vercel."""
+    application = Application.builder().token(token).build()
+    application.add_handler(CommandHandler('start', start))
+    application.add_handler(CallbackQueryHandler(handle_callback))
+    async with application:
+        update = Update.de_json(data, application.bot)
+        await application.process_update(update)
+
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
     try:
         data = request.get_json(force=True)
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        application = loop.run_until_complete(get_bot_app())
-        update = Update.de_json(data, application.bot)
-        loop.run_until_complete(application.process_update(update))
-        loop.close()
+        asyncio.run(process_update(TOKEN, data))
         return jsonify({'ok': True})
     except Exception as e:
         logger.error(f"Webhook error: {e}")
