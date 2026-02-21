@@ -64,8 +64,7 @@ async def show_skate(query):
         [InlineKeyboardButton("👟 Zapatos (Nike SB, Vans)", callback_data='skate_shoes')],
         [InlineKeyboardButton("🔙 Volver", callback_data='main_menu')]
     ]
-    await query.edit_message_text("*SKATEBOARDING*
-Selecciona subcategoria:", reply_markup=InlineKeyboardMarkup(keyboard), parse_mode='Markdown')
+    await query.edit_message_text("*SKATEBOARDING* Selecciona subcategoria:", reply_markup=InlineKeyboardMarkup(keyboard), parse_mode='Markdown')
 
 async def show_deals(query):
     text = "*OFERTAS DEL DIA*
